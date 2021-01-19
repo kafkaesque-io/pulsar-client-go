@@ -573,8 +573,6 @@ func (p *partitionProducer) internalSendAsync(ctx context.Context, msg *Producer
 		flushImmediately: flushImmediately,
 		publishTime:      time.Now(),
 	}
-	p.options.Interceptors.BeforeSend(p, msg)
-
 	if p.options.DisableBlockIfQueueFull {
 		if !p.publishSemaphore.TryAcquire() {
 			if callback != nil {
@@ -585,6 +583,7 @@ func (p *partitionProducer) internalSendAsync(ctx context.Context, msg *Producer
 	} else {
 		p.publishSemaphore.Acquire()
 	}
+	p.options.Interceptors.BeforeSend(p, msg)
 
 	p.metrics.MessagesPending.Inc()
 	p.metrics.BytesPending.Add(float64(len(sr.msg.Payload)))
