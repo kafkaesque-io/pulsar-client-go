@@ -112,6 +112,9 @@ type ClientOptions struct {
 
 	// Add custom labels to all the metrics reported by this client instance
 	CustomMetricsLabels map[string]string
+
+	// The default max message size in bytes. The valid is between 5,242,880 to 104,857,600 bytes(5 to 100 MB).
+	DefaultMaxMessageSize int
 }
 
 type Client interface {
